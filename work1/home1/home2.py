@@ -6,9 +6,9 @@ a = 1
 b = 1
 i = 0
 while i < n - 2:
-    sum = a + b
+    summa = a + b
     a = b
-    b = sum
+    b = summa
     i = i + 1
  
 print("Значення: ", b)

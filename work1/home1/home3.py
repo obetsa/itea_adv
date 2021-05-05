@@ -6,11 +6,11 @@ b = int(input("Second: "))
 c = int(input("Third: "))
 
 if a < b:
-    min = a
+    minimal = a
 else:
-    min = b
-if c < min:
-    min = c
-sum = a + b + c - min
+    minimal = b
+if c < minimal:
+    minimal = c
+res = a + b + c - minimal
 
-print("Summa: ", sum)
+print("Summa: ", res)
