@@ -7,3 +7,25 @@
 - метод, возвращающий, сколько заявка находится в активном статусе (если она в нём)
 - метод, изменяющий статус заявки
 - метод, возвращающий id заявки """
+
+
+class Request:
+    count = 0
+
+    def __init__(self, id, time, name, number, status):
+        self.id = id
+        self.time = time
+        self.name = name
+        self.number = number
+        self.status = status
+
+    def __new__(cls, *args, **kwargs):
+        pass
+
+    def status_on(self,):
+        pass
+
+    def status_change(self):
+        pass
+
+    def 
