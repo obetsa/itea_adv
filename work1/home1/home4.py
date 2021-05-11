@@ -13,5 +13,5 @@ try:
         for i in map(int, input().split()):
             result += i
         print(result)
-except ValueError:
-    print(result)
+except ValueError as err:
+    print(err)
