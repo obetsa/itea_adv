@@ -27,5 +27,3 @@ class Request:
 
     def status_change(self):
         pass
-
-    def 
