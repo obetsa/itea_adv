@@ -11,18 +11,25 @@ Four — 4
 from pathlib import Path
 path = Path(__file__).resolve().parent
 file_path = path / "new_file.txt"
-file_path1 = path / "new_file1.txt"
+file_path_new = path / "new_new_file.txt"
 
+# with open(file_path, "w") as f:
+#     f.write('One - 1\nTwo - 2\nThree - 3\nFour - 4')
 
-
-with open(file_path, "w") as f:
-    f.write('One - 1\nTwo - 2\nThree - 3\nFour - 4')
-
+zamena = {'One': 'Один', 'Two': 'Два', 'Three': 'Три', 'Four': 'Четыре'} # Нужно еще настроить перевод на UTF8
+result = []
 
 with open(file_path, "r") as f:
-    f.seek(0)
-    text = f.read()
-    text = text.replace("One", "Один")
-    print(f.readlines())
-    with open(file_path1, "w") as f:
-        f.write(text)
+    for line in f:
+        x = line.split(" - ")
+        if x[0] in zamena:
+            word = zamena[x[0]]
+            result.append(word + " - " + x[1])
+    print(result)
+f.close()
+
+
+with open(file_path_new, "w") as f:
+    f.writelines(result)
+    f.close
+
