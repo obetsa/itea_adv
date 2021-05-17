@@ -11,36 +11,29 @@ from abc import ABC, abstractmethod
 from uuid import uuid4
 
 
-spisok = []
-
 class BaseOrgtech(ABC):
-
-    # @abstractmethod
-    # def name(self):
+    # def __init__(self):
     #     pass
 
     @abstractmethod
     def ping(self):
-         print("ping: ")
+        print("ping: ")
+
 
 class Printer(BaseOrgtech):
-    def __init__(self, t_printer):
+    def __init__(self, id, name):
         self.id = id
-        self.t_printer = t_printer
+        self.name = name
     
     def ping(self):
         super().ping()
         print("Printer\n")
-    
-    # def name(self):
-    #     print("Printer HP")
 
 
 class Scanner(BaseOrgtech):
-    def __init__(self, t_scanner):
+    def __init__(self, id, name):
         self.id = id
-        self.t_scanner = t_scanner
-#     #     self.scan = scan
+        self.name = name
 
     def ping(self):
         super().ping()
@@ -48,14 +41,14 @@ class Scanner(BaseOrgtech):
 
 
 class Xerox(BaseOrgtech):
-    def __init__(self, id):
+    def __init__(self, id, name):
         self.id = id
-        # self.t_xerox = t_xerox
-# #         self.xero = xero
+        self.name = name
 
     def ping(self):
         super().ping()
         print("Xerox")
+
 
 TYPES_MAPPING = {
     "printer": Printer,
@@ -63,29 +56,29 @@ TYPES_MAPPING = {
     "xerox": Xerox
 }
 
-class Sclad:
-    def __init__(self, type, *args, **kwargs):
-        self.type = type
-        self.id = uuid4()
+class Warehouse:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, type, *args, **kwargs):
+        id = uuid4()
         class_of_tech = TYPES_MAPPING[type]
-        return class_of_tech(id=self.id, *args, **kwargs)
-
-    def save_item(self):
-        spisok.append(self)
-        
-
-
+        item = class_of_tech(id, *args, **kwargs)
+        self.items.append(item)
+        print('item added to warehouse')
 
 
 
 # p = Printer()
 # p.ping()
-# # p.name()
 # s = Scanner()
 # s.ping()
 # x = Xerox()
 # x.ping()
 
-a = Sclad(type='xerox')
+a = Warehouse()
+a.add_item("printer", " Canon MF240")
 print(a)
+
+
 
