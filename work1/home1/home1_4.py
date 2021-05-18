@@ -14,5 +14,10 @@ try:
         for i in map(int, input().split()):
             result += i
         print(result)
+
+        if input("\nContinue? (y/n) ") != "y":
+            print(f'Bye! {result}')
+            break
+        
 except ValueError as err:
     print(err)
