@@ -3,29 +3,19 @@
  5! = 1 * 2 * 3 * 4 * 5 
 """
 
-try:
-    n = int(input("Enter number: "))
-except ValueError:
-    print("Not a number")
-except Exception:
-    print("what is this??)")
 
+def fact(n):
+    count = 1
+    for i in range(1, n + 1):
+        count *= i
+        yield count
 
-def number():
-    pass
+f = fact(5)
+print(next(f))
+print(next(f))
+print(next(f))
+print(next(f))
+print(next(f))
 
-def fibonacchi(n):
-    a = 1
-    b = 1
-    i = 0
-    while i < n - 2:
-        summa = a + b
-        a = b
-        b = summa
-        i = i + 1
- 
-    print("Значення: ", b)
-
-
-fibonacchi(n)
-
+for i in fact(6):
+    print(i)
