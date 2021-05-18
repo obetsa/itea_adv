@@ -20,27 +20,27 @@
 Написать код создания таблиц на языке SQL, предусмотреть необходимые ограничения.
 """
 
-CREATE TABLE orders (
-    order_id INTEGER,
-    created_dt TEXT,
-    updated_dt TEXT,
-    order_type TEXT,
+CREATE TABLE if not exists orders (
+    order_id SERIAL PRIMARY KEY,
+    created_dt DATE NOT NULL,
+    updated_dt DATE NOT NULL,
+    order_type text NOT NULL,
     description TEXT,
-    status TEXT,
-    serial_no INTEGER,
-    creator_id INTEGER
+    status text NOT NULL,
+    serial_no INTEGER NOT NULL,
+    creator_id INTEGER NOT null,
+    foreign key (creator_id) references employees (employee_id)
     );
-
-CREATE TABLE employees (
-    employee_id INTEGER,
-    fio TEXT,
+   
+CREATE TABLE if not exists employees (
+    employee_id SERIAL PRIMARY key,
+    fio text NOT NULL,
     position TEXT,
-    department_id INTEGER
+    department_id INTEGER NOT NULL,
+    FOREIGN KEY (department_id) REFERENCES departments (department_id)
     );
 
-CREATE TABLE departments (
-	department_id INTEGER,
-	department_name TEXT
+CREATE TABLE if not exists departments (
+	department_id SERIAL PRIMARY key,
+	department_name text NOT null
 	);
-
-
