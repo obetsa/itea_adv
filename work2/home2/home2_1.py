@@ -9,11 +9,12 @@
 
 class Car:
 
-    def __init__(self, speed, colour, name, is_police=False):
+    def __init__(self, speed, colour, name, speed_limit, is_police=False):
         self.speed = int(speed)
         self.colour = colour
         self.name = name
         self.is_police = is_police
+        self.speed_limit = int(speed_limit)
     
     def show_speed(self):
         print(self.speed)
@@ -33,44 +34,50 @@ class Car:
     def __str__(self):
         return f"Car {self.name}, {self.colour} colour has {self.speed} speed {'police' if self.is_police else ''}"
 
+    def show_speed(self):
+        if self.speed >= self.speed_limit:
+            print("too big")
+
+    def show_speed(self):
+        if self.speed >= self.speed_limit:
+            print("too big")
 
 class TownCar(Car):
+    def __init__(self, *args, speed_limit=60):
+        super().__init__(*args, speed_limit)
 
-    def show_speed(self):
-        if self.speed >= 60:
-            print("too big")
 
 class WorkCar(Car):
-
-    def show_speed(self):
-        if self.speed >= 40:
-            print("too big")
+    def __init__(self, *args, speed_limit=40):
+        super().__init__(*args, speed_limit)
 
 class SportCar(Car):
     pass
 
 class PoliceCar(Car):
-    def __init__(self, speed, colour, name, is_police=True):
-        super().__init__(speed, colour, name, is_police)
+    def __init__(self, *args, is_police=True):
+        super().__init__(*args, is_police)
     
 
-tachka = Car("180", "red", "BMW")
+tachka = Car("180", "red", "BMW", "10")
 tachka_1 = TownCar("50", "black", "Volvo")
-tachka_2 = WorkCar("50", "silver", "Audi")
-tachka_3 = PoliceCar("50", "silver", "Lada")
+# tachka_2 = WorkCar("50", "silver", "Audi")
+# tachka_3 = PoliceCar("50", "silver", "Lada")
 tachka.go()
 tachka.turn("right")
+print(tachka_1.show_speed)
 print(tachka.name)
 print(tachka.speed)
 tachka.accelerate()
 print(tachka.speed)
 tachka.stop()
+tachka.show_speed()
 tachka_1.show_speed()
 tachka_1.accelerate()
 tachka_1.show_speed()
-tachka_2.show_speed()
-tachka_3.show_speed()
+# tachka_2.show_speed()
+# tachka_3.show_speed()
 print(tachka)
 print(tachka_1)
-print(tachka_2)
-print(tachka_3)
+# print(tachka_2)
+# print(tachka_3)
