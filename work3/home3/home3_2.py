@@ -17,7 +17,6 @@ class Matrix:
             self.width = maxlength
             self.height = len(rows)
 
-
     def __add__(self, other: 'Matrix'):
         if (self.height == other.height and self.width == other.width):
             rows = []
@@ -27,7 +26,6 @@ class Matrix:
                     r.append(p[i] + t[i])
                 rows.append(r)
             return Matrix(rows)
-
 
     def __sub__(self, other: 'Matrix'):
         if (self.height == other.height and self.width == other.width):
@@ -39,7 +37,6 @@ class Matrix:
                 rows.append(r)
             return Matrix(rows)
 
-
     def __mul__(self, other: 'Matrix'):
         if (self.height == other.height and self.width == other.width):
             rows= []
@@ -49,7 +46,6 @@ class Matrix:
                     r.append(p[i] * t[i])
                 rows.append(r)
             return Matrix(rows)
-
 
     def __truediv__(self, other: 'Matrix'):
         if (self.height == other.height and self.width == other.width):
@@ -62,13 +58,13 @@ class Matrix:
             return Matrix(rows)
 
                       
-# m = Matrix([[1,2,3],[2,3,4]])
-# n = Matrix([[1,2,3],[5,3,4]])
-# p = m + n
-# print(p.rows)
-# s = m - n
-# print(s.rows)
-# g = m * n
-# print(g.rows)
-# j = m / n
-# print(j.rows)
+m = Matrix([[1, 2, 3], [2, 3, 4]])
+n = Matrix([[1, 2, 3], [5, 3, 4]])
+p = m + n
+print(p.rows)
+s = m - n
+print(s.rows)
+g = m * n
+print(g.rows)
+j = m / n
+print(j.rows)
