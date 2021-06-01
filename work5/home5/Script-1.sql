@@ -1,27 +1,27 @@
-CREATE TABLE if not exists orders (
+CREATE TABLE IF NOT EXISTS orders (
     order_id SERIAL PRIMARY KEY,
     created_dt DATE NOT NULL,
     updated_dt DATE NOT NULL,
-    order_type text NOT NULL,
+    order_type TEXT NOT NULL,
     description TEXT,
-    status text NOT NULL,
+    status TEXT NOT NULL,
     serial_no INTEGER NOT NULL,
-    creator_id INTEGER NOT null,
-    foreign key (creator_id) references employees (employee_id)
+    creator_id INTEGER NOT NULL,
+    FOREIGN KEY (creator_id) REFERENCES employees (employee_id)
     );
    
-CREATE TABLE if not exists employees (
-    employee_id SERIAL PRIMARY key,
-    fio text NOT NULL,
+CREATE TABLE IF NOT EXISTS employees (
+    employee_id SERIAL PRIMARY KEY,
+    fio TEXT NOT NULL,
     position TEXT,
     department_id INTEGER NOT NULL,
     FOREIGN KEY (department_id) REFERENCES departments (department_id)
     ON DELETE CASCADE
     );
 
-CREATE TABLE if not exists departments (
-	department_id SERIAL PRIMARY key,
-	department_name text NOT null
+CREATE TABLE IF NOT EXISTS departments (
+	department_id SERIAL PRIMARY KEY,
+	department_name TEXT NOT NULL
 	);
 
 
