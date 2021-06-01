@@ -1,6 +1,7 @@
 """2. Покрыть тестами задачу из прошлой домашки с матрицами: сложение, умножение на число, возникновение ошибки.
 Либо если не получается с матрицей, то взять любую другую задачу из дз и написать тесты для неё."""
 
+
 class InvalidMatrixDimensions(Exception):
     pass
 
@@ -60,15 +61,14 @@ class Matrix:
                 rows.append(r)
             return Matrix(rows)
 
-                    
-        
-m = Matrix([[1,2,3],[2,3,4]])
-n = Matrix([[1,2,3],[5,3,4]])
-p = m + n
-print(p.rows)
-s = m - n
-print(s.rows)
-g = m * n
-print(g.rows)
-j = m / n
-print(j.rows)
+                      
+# m = Matrix([[1,2,3],[2,3,4]])
+# n = Matrix([[1,2,3],[5,3,4]])
+# p = m + n
+# print(p.rows)
+# s = m - n
+# print(s.rows)
+# g = m * n
+# print(g.rows)
+# j = m / n
+# print(j.rows)
