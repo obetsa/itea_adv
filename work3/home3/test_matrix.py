@@ -1,6 +1,6 @@
 import pytest
 
-from work3.home3.home3_2 import Matrix
+from .home3_2 import Matrix
 
 
 @pytest.mark.parametrize(
