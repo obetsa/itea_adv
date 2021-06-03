@@ -11,3 +11,82 @@ SQL 2 ЧАСТЬ
     - запрос, возвращающий список сотрудников и департаментов, в которых они работают
     - запрос, позволяющий получить количество заявок в определенном статусе (можно выбрать любой) по дням;
 """
+
+import psycopg2
+from psycopg2 import sql
+from datetime import datetime
+
+conn = psycopg2.connect("postgres://postgres:********@localhost:5432/postgres")
+
+"""
+CREATE TABLE if not exists orders (
+    order_id SERIAL PRIMARY KEY,
+    created_dt DATE NOT NULL,
+    updated_dt,
+    order_type TEXT NOT NULL,
+    description TEXT,
+    status text NOT NULL,
+    serial_no INTEGER NOT NULL,
+    creator_id INTEGER NOT NULL,
+    foreign key (creator_id) references employees (employee_id)
+    );
+
+CREATE TABLE if not exists employees (
+    employee_id SERIAL PRIMARY key,
+    fio text NOT NULL,
+    position TEXT,
+    department_id INTEGER NOT NULL,
+    FOREIGN KEY (department_id) REFERENCES departments (department_id)
+    );
+
+CREATE TABLE if not exists departments (
+	department_id SERIAL PRIMARY key,
+    department_name TEXT NOT NULL
+    );
+"""
+
+orders = [(datetime.now(), 'order_type_1', 'Active', 11111, 1),
+          (datetime.now(), 'order_type_2', 'Active', 22222, 2),
+          (datetime.now(), 'order_type_3', 'Active', 33333, 3),
+          (datetime.now(), 'order_type_4', 'Active', 44444, 4),
+          (datetime.now(), 'order_type_5', 'Active', 55555, 5),
+          (datetime.now(), 'order_type_6', 'Closed', 66666, 6),
+          (datetime.now(), 'order_type_7', 'Closed', 77777, 7)]
+
+employees = [("aaa", "qwe", 1),
+             ("bbb", "asd", 1),
+             ("ccc", "zxc", 2),
+             ("ddd", "qwe", 2),]
+
+departments = ["IT",
+               "IT_2"]
+
+
+SELECT_QUERY_orders = """SELECT * FROM orders"""
+SELECT_QUERY_employees = """SELECT * FROM employees"""
+SELECT_QUERY_departments = """SELECT * FROM departments"""
+
+
+INSERT_QUERY_orders = sql.SQL("""INSERT INTO orders (created_dt, order_type, status, serial_no, creator_id) 
+                            VALUES (%s, %s, %s, %s, %s)""")
+INSERT_QUERY_employees = sql.SQL("""INSERT INTO employees(fio, position_, department_id) 
+                            VALUES (%s, %s, %s)""")
+INSERT_QUERY_departments = sql.SQL("""INSERT INTO departments(department_name) 
+                            VALUES (%s)""")
+
+with conn, conn.cursor() as cursor:
+    for order in orders:
+        cursor.execute(INSERT_QUERY_orders, order)
+
+with conn, conn.cursor() as cursor:
+    for employee in employees:
+        cursor.execute(INSERT_QUERY_employees, employee)
+
+with conn, conn.cursor() as cursor:
+    for department in departments:
+        cursor.execute(INSERT_QUERY_departments, department)
+
+
+
+
+
