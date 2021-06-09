@@ -79,7 +79,8 @@ class Order(BaseModel):
     CHANGE_ORDER_QUERY = sql.SQL("""UPDATE orders SET updated_dt = %s, status = %s WHERE order_id = %s""")
 
     def __init__(self, created_dt, updated_dt, order_type,description, status, serial_no, creator_id, order_id=None):
-        self.created_dt = datetime.now()
+        Order.date_object = datetime.now().strptime("%d %B, %Y")
+        self.created_dt = Order.date_object
         self.updated_dt = updated_dt
         self.order_type = order_type
         self.description = description
@@ -87,14 +88,25 @@ class Order(BaseModel):
         self.serial_no = serial_no
         self.creator_id = creator_id
         self.order_id = order_id
+        Order.count_request += 1
 
-        self.time = datetime.now()
-        self.name = name
-        self.ser_number = ser_number
-        Request.count_request += 1
+    def create_date(self):
+        with connect, connect.cursor() as cursor:
+            cursor.execute(self.__class__.CREATE_ORDER_QUERY, (datetime.now(), self.order_type, self.description,
+                                                               self.status, self.serial_no, self.creator_id))
+            order_id = cursor.fetchone()[0]
+            self.order_id = order_id
+        return {"order_id": order_id}
 
-    def status_change(self):
-        pass
+    def delete_data(self):
+        if not self.order_id:
+            raise DataRequiredException(message="Enter order_id")
+        with connect, connect.cursor() as cursor:
+            cursor.execute(self.__class__.DELETE_ORDER_QUERY, (self.order_id))
+
+    def status_change(self, new_status):
+        with connect, connect.cursor() as cursor:
+            cursor.execute(self.__class__.CHANGE_ORDER_QUERY, (new_status, self.order_id))
 
     def request_id(self):
         return self.__id
