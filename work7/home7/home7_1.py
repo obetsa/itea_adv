@@ -10,7 +10,6 @@
 использовать концепции ООП (инкапсуляцию, наследование, полиморфизм).
 """
 
-import time
 import psycopg2
 from psycopg2 import sql
 from datetime import datetime
@@ -37,7 +36,7 @@ CREATE TABLE if not exists orders (
     );
 CREATE TABLE if not exists employees (
     employee_id SERIAL PRIMARY key,
-    fio text NOT NULL,
+    fio TEXT NOT NULL,
     position TEXT,
     department_id INTEGER NOT NULL,
     FOREIGN KEY (department_id) REFERENCES departments (department_id)
@@ -49,14 +48,29 @@ CREATE TABLE if not exists departments (
 """
 
 
-
 class BaseModel(ABC):
     @abstractmethod
-    def create_new_data(self, *args, **kwargs):
+    def create_date(self, *args, **kwargs):
         pass
 
     @abstractmethod
-    def delete_data_by_id(self, *args, **kwargs):
+    def delete_data(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def status_change(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def description_change(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def department_name_change(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def position_change(self, *args, **kwargs):
         pass
 
     def real_method(self):
@@ -90,6 +104,7 @@ class Order(BaseModel):
         self.order_id = order_id
         Order.count_request += 1
 
+    # создание новой заявки
     def create_date(self):
         with connect, connect.cursor() as cursor:
             cursor.execute(self.__class__.CREATE_ORDER_QUERY, (datetime.now(), self.order_type, self.description,
@@ -98,38 +113,64 @@ class Order(BaseModel):
             self.order_id = order_id
         return {"order_id": order_id}
 
+    # удалять данные
     def delete_data(self):
         if not self.order_id:
             raise DataRequiredException(message="Enter order_id")
         with connect, connect.cursor() as cursor:
-            cursor.execute(self.__class__.DELETE_ORDER_QUERY, (self.order_id))
+            cursor.execute(self.__class__.DELETE_ORDER_QUERY, (self.order_id, ))
 
+    # изменение статуса
     def status_change(self, new_status):
         with connect, connect.cursor() as cursor:
-            cursor.execute(self.__class__.CHANGE_ORDER_QUERY, (new_status, self.order_id))
+            cursor.execute(self.__class__.CHANGE_ORDER_QUERY, (new_status, datetime.now(), self.order_id, ))
 
-    def request_id(self):
-        return self.__id
+    # изменение описания
+    def description_change(self, new_description):
+        with connect, connect.cursor() as cursor:
+            cursor.execute(self.__class__.CHANGE_ORDER_QUERY, (new_description, datetime.now(), self.order_id, ))
 
-    def r_close(self):
-        self.status = "closed"
+    # ?? изменение id создателя ??
 
-    def r_open(self):
-        self.status = "active"
+class Departments(BaseModel):
+    CREATE_DEPARTMENT_QUERY = sql.SQL("""INSERT INTO departments (department_name) VALUES (%s) 
+                                        RETURNING department_id""")
+    CHANGE_DEPARTMENT_QUERY = sql.SQL("""UPDATE departments SET department_name = %s WHERE department_id = %s""")
 
-    def __str__(self):
-        pending = datetime.now() - self.time
-        delta = divmod(pending.total_seconds(), 60)
-        return f'pending time: {delta[0]} minutes and {delta[1]} seconds'
+    def __init__(self, department_name, department_id=None):
+        self.department_name = department_name
+        self.department_id = department_id
 
-r = Request(id="1", name='Test', ser_number='222')
-t = Request(id="2", name='Test2', ser_number='SB222')
-time.sleep(2)
-print(r.status)
-print(r.request_id())
-print(t.request_id())
-print(r.time)
-print(Request.count_request)
-print(r)
-r.r_close()
-print(r.status)
+    def create_date(self):
+        with connect, connect.cursor() as cursor:
+            cursor.execute(self.__class__.CREATE_DEPARTMENT_QUERY, (self.department_name, ))
+            department_id = cursor.fetchone()[0]
+            self.department_id = department_id
+        return {"department_id": department_id}
+
+    def department_name_change(self, new_department_name):
+        with connect, connect.cursor() as cursor:
+            cursor.execute(self.__class__.CHANGE_DEPARTMENT_QUERY, (new_department_name, ))
+
+
+class Employees(BaseModel):
+    CREATE_EMPLOYEES_QUERY = sql.SQL("""INSERT INTO employees (fio, position, department_id) VALUES (%s, %s, %s) 
+                                        RETURNING employee_id""")
+    CHANGE_EMPLOYEES_QUERY = sql.SQL("""UPDATE employees SET position = %s WHERE department_id = %s""")
+
+    def __init__(self, fio, position, department_id, employee_id=None):
+        self.fio = fio
+        self.position = position
+        self.department_id = department_id
+        self.employee_id = employee_id
+
+    def create_date(self):
+        with connect, connect.cursor() as cursor:
+            cursor.execute(self.__class__.CREATE_EMPLOYEES_QUERY, (self.fio, self.position, self.department_id))
+            employee_id = cursor.fetchone()[0]
+            self.employee_id = employee_id
+        return {"employee_id": employee_id}
+
+    def position_change(self, new_position):
+        with connect, connect.cursor() as cursor:
+            cursor.execute(self.__class__.CHANGE_EMPLOYEES_QUERY, (new_position, ))
