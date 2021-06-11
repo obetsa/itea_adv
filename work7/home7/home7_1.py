@@ -18,9 +18,9 @@ from envparse import Env
 from abc import ABC, abstractmethod
 
 env = Env()
-DB_URL = env.str("SOME_DB_URL", default="postgres://postgres:********@localhost:5432/postgres")
+PASS = env.str("*****")
+DB_URL = env.str("SOME_DB_URL", default="postgres://postgres:PASS@localhost:5432/postgres")
 connect = psycopg2.connect(DB_URL)
-
 
 """
 CREATE TABLE if not exists orders (
