@@ -23,7 +23,7 @@ DB_URL = env.str("SOME_DB_URL", default="postgres://postgres:PASS@localhost:5432
 connect = psycopg2.connect(DB_URL)
 
 """
-CREATE TABLE if not exists orders (
+CREATE TABLE IF NOT EXISTS orders (
     order_id SERIAL PRIMARY KEY,
     created_dt DATE NOT NULL,
     updated_dt,
@@ -34,14 +34,14 @@ CREATE TABLE if not exists orders (
     creator_id INTEGER NOT NULL,
     foreign key (creator_id) references employees (employee_id)
     );
-CREATE TABLE if not exists employees (
+CREATE TABLE IF NOT EXISTS employees (
     employee_id SERIAL PRIMARY key,
     fio TEXT NOT NULL,
     position TEXT,
     department_id INTEGER NOT NULL,
     FOREIGN KEY (department_id) REFERENCES departments (department_id)
     );
-CREATE TABLE if not exists departments (
+CREATE TABLE IF NOT EXISTS departments (
 	department_id SERIAL PRIMARY key,
     department_name TEXT NOT NULL
     );
